@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import {
   useGLTF,
   useProgress,
@@ -8,9 +8,9 @@ import {
   Sky,
 } from "@react-three/drei";
 
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 
-import Avatar5 from "./components/Avatar5";
+import Dolly from "./components/Dolly";
 import CoolCity from "./components/CoolCity";
 
 function Loader() {
@@ -19,12 +19,20 @@ function Loader() {
 }
 
 function App() {
+  const [scene, setScene] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
   return (
     <div className="canvas">
       <Suspense fallback={null}>
-        <Canvas camera={{ position: [0, 4, 6] }}>
+        <Canvas camera={{ position: [0, 2, 6] }}>
           <Suspense fallback={<Loader />}>
-            <Avatar5 />
+            <Dolly
+              scene={scene}
+              isTransitioning={isTransitioning}
+              setIsTransitioning={setIsTransitioning}
+              setScene={setScene}
+            />
             <CoolCity scale={[0.6, 0.6, 0.6]} />
             <ambientLight intensity={0.9} />
             <mesh
@@ -38,6 +46,13 @@ function App() {
           </Suspense>
         </Canvas>
       </Suspense>
+      <button
+        onClick={() => {
+          setIsTransitioning(true);
+        }}
+      >
+        update
+      </button>
     </div>
   );
 }
