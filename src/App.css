@@ -1,4 +1,6 @@
 .canvas {
   height: 95vh;
   width: 100vw;
+  z-index: 1;
+  position: relative;
 }
